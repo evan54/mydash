@@ -107,14 +107,16 @@ class PonyTable:
         for col, arg in zip(self.table_cols, args):
             col_type = self._get_type(col)
             if col_type is self.SET:
-                arg = [get_entry_from_repr(e) for e in arg] if arg else None
+                arg = [get_entry_from_repr(e) for e in arg]
             elif col_type is self.REFERENCE:
                 print(arg, type(arg))
                 arg = get_entry_from_repr(arg)
             elif col_type is self.DATE:
                 print(arg)
-            if arg:
-                output[col] = arg
+            elif col_type is self.BOOL:
+                arg = len(arg) > 0
+                print(arg)
+            output[col] = arg
         return output
 
     def _get_type(self, key):
@@ -435,13 +437,13 @@ def assign_callbacks(app):
 
     return app
 
+
 if __name__ == '__main__':
     app = dash.Dash(__name__)
     app.css.append_css({
         'external_url': ('https://stackpath.bootstrapcdn.com/'
-                        'bootstrap/4.1.1/css/bootstrap.min.css')
-        })
-
+                         'bootstrap/4.1.1/css/bootstrap.min.css')
+    })
 
     app.layout = html.Div(
         className='container-fluid',
@@ -451,13 +453,12 @@ if __name__ == '__main__':
         ])
 
     @app.callback(Output('page-content', 'children'),
-                [Input('url', 'pathname')])
+                  [Input('url', 'pathname')])
     def route(pathname):
         if pathname == '/':
             return layout
         else:
             return 'Σφάλμα: 404'
-
 
     app.config.supress_callback_exceptions = True
 
