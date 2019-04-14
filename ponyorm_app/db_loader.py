@@ -5,7 +5,9 @@ from pathlib import Path
 
 def _import_database():
     if len(sys.argv) < 2:
-        raise ValueError('Need Database definition as well')
+        raise ValueError(
+            'Need Database definition as well, typical use:',
+            'python -m mydash.ponyorm_app.<FUNCTION> db_definition.py')
     db_file = sys.argv[1]
     pnfn = Path(db_file).absolute()
     file_path = str(pnfn)
