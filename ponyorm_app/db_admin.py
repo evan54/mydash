@@ -107,7 +107,8 @@ class PonyTable:
         for col, arg in zip(self.table_cols, args):
             col_type = self._get_type(col)
             if col_type is self.SET:
-                arg = [get_entry_from_repr(e) for e in arg]
+                arg = [] if arg is None else [
+                    get_entry_from_repr(e) for e in arg]
             elif col_type is self.REFERENCE:
                 print(arg, type(arg))
                 arg = get_entry_from_repr(arg)
